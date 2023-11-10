@@ -12,6 +12,10 @@ Rails.application.routes.draw do
 
   authenticate :user do
     root "my_pages#show"
-    resources :passkeys, only: [:index, :create, :destroy]
+    resources :passkeys, only: [:index, :create, :destroy] do
+      collection do
+        resources :creation_options, only: [:create], module: :passkeys
+      end
+    end
   end
 end

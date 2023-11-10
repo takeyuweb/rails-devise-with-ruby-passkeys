@@ -245,9 +245,6 @@ GEM
       concurrent-ruby (~> 1.0)
     warden (1.2.9)
       rack (>= 2.0.9)
-    warden-webauthn (0.3.0)
-      warden
-      webauthn (>= 3)
     web-console (4.2.1)
       actionview (>= 6.0.0)
       activemodel (>= 6.0.0)
@@ -289,8 +286,8 @@ DEPENDENCIES
   stimulus-rails
   turbo-rails
   tzinfo-data
-  warden-webauthn (~> 0.3.0)
   web-console
+  webauthn (~> 3.0)
 
 RUBY VERSION
    ruby 3.2.2p53

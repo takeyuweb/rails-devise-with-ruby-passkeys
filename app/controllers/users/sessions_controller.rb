@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Users::SessionsController < Devise::SessionsController
+  include Passkeyable
+
   # before_action :configure_sign_in_params, only: [:create]
 
   # GET /resource/sign_in
@@ -43,10 +45,9 @@ class Users::SessionsController < Devise::SessionsController
     parsed_credential = JSON.parse(passkey_params[:credential]) rescue nil
     return @authrized_passkey = nil unless parsed_credential
 
-    authentication_challenge = session[:current_webauthn_authentication_challenge]
-    x, passkey = WebAuthn.configuration.relying_party.verify_authentication(
+    x, passkey = relying_party.verify_authentication(
       parsed_credential,
-      authentication_challenge,
+      stored_authentication_challenge,
       user_verification: true
     ) do |webauthn_credential|
       user = User.find_by(email: params[:user][:email])

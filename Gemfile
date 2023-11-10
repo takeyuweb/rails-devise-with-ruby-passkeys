@@ -69,4 +69,4 @@ end
 
 gem "devise", "~> 4.9"
 
-gem "warden-webauthn", "~> 0.3.0"
+gem "webauthn", "~> 3.0"

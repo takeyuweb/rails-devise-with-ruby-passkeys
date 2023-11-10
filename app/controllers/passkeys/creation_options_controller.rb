@@ -1,6 +1,5 @@
 class Passkeys::CreationOptionsController < ApplicationController
-  include Warden::WebAuthn::StrategyHelpers
-  include Warden::WebAuthn::RegistrationHelpers
+  include Passkeyable
 
   # See https://github.com/cedarcode/webauthn-ruby#options-for-create
   def create
@@ -11,7 +10,7 @@ class Passkeys::CreationOptionsController < ApplicationController
       exclude: current_user.passkeys.pluck(:external_id), # 登録済みの鍵は除外する。たとえば Windows Edge, Android, セキュリティキー の選択肢があるとき、Edgeが登録済みなら候補から除外する
     )
 
-    store_challenge_in_session(options_for_registration: creation_options)
+    store_registration_challenge(creation_options)
 
     render json: creation_options
   end

@@ -82,6 +82,4 @@ test:
 #
 production:
   <<: *default
-  database: rails_devise_with_ruby_passkeys_production
-  username: rails_devise_with_ruby_passkeys
-  password: <%= ENV["RAILS_DEVISE_WITH_RUBY_PASSKEYS_DATABASE_PASSWORD"] %>
+  url: <%= ENV['DATABASE_URL'] %>

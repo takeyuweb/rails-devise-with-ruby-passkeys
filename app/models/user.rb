@@ -5,5 +5,6 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
 
   has_one :webauthn_user, dependent: :destroy
-  has_many :passkeys, through: :webauthn_user
+
+  delegate :passkeys, to: :webauthn_user, allow_nil: true
 end

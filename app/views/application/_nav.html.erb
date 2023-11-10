@@ -1,0 +1,7 @@
+<nav>
+  <ul>
+    <li><%= link_to "Home", root_path %></li>
+    <li><%= link_to "Passkeys", passkeys_path %></li>
+    <li><%= button_to "Log out", destroy_user_session_path, method: :delete %></li>
+  </ul>
+</nav>

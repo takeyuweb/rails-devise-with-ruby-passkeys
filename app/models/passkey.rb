@@ -1,5 +1,6 @@
 class Passkey < ApplicationRecord
   belongs_to :webauthn_user
+  delegate :user, to: :webauthn_user
 
   validates :external_id, presence: true, uniqueness: { scope: :webauthn_user_id }
   validates :public_key, presence: true

@@ -19,4 +19,8 @@ Rails.application.routes.draw do
       end
     end
   end
+
+  scope :passkeys do
+    resources :request_options, only: [:create], module: :passkeys
+  end
 end

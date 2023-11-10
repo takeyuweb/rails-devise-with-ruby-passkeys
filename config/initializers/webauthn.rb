@@ -4,7 +4,7 @@ WebAuthn.configure do |config|
   config.origin = ENV.fetch('WEBAUTHN_ORIGIN') { "http://localhost:3000" }
 
   # Relying Party name for display purposes
-  config.rp_name = "Rails Devise with ruby-passkeys Demo"
+  config.rp_name = "Rails Devise with webauthn-ruby Demo"
 
   # Optionally configure a client timeout hint, in milliseconds.
   # This hint specifies how long the browser should wait for any

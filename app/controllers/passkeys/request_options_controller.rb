@@ -3,10 +3,11 @@ class Passkeys::RequestOptionsController < ApplicationController
 
   def create
     user_params = params.require(:user).permit(:email)
-    user = User.find_by!(email: user_params[:email])
+    user = User.find_by(email: user_params[:email])
 
     request_options = WebAuthn::Credential.options_for_get(
-      allow: user.passkeys.pluck(:external_id)
+      user_verification: "required",  # ユーザー認証を要求する
+      allow: user ? user.passkeys.pluck(:external_id) : nil,  # メールアドレスからユーザーが特定できれば、登録済みのパスキーで絞り込む
     )
 
     store_authentication_challenge(request_options)

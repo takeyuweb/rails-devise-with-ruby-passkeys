@@ -21,7 +21,7 @@ export default class extends Controller {
         const isCMA = await PublicKeyCredential.isConditionalMediationAvailable();
         if (isCMA) {
           console.log("CMA is available");
-          this.getChallengeAndSubmitCredential();
+          this.getChallengeAndSubmitCredential(isCMA);
         } else {
           console.log("CMA is not available");
         }
@@ -35,10 +35,10 @@ export default class extends Controller {
 
   signInWithPasskey(event) {
     event.preventDefault();
-    this.getChallengeAndSubmitCredential();
+    this.getChallengeAndSubmitCredential(false);
   }
 
-  getChallengeAndSubmitCredential() {
+  getChallengeAndSubmitCredential(isCMA) {
     const data = new FormData(this.formTarget);
     data.delete('_method');
 
@@ -55,6 +55,9 @@ export default class extends Controller {
         console.log(requestOption);
         // ここに成功時の処理を書く
         const credentialRequestOptions = parseRequestOptionsFromJSON({ publicKey: requestOption });
+        if (isCMA) {
+          credentialRequestOptions['mediation'] = 'conditional';
+        }
         const credentialRequestResponse = await get(credentialRequestOptions);
         this.credentialFieldTarget.value = JSON.stringify(credentialRequestResponse);
         this.formTarget.submit();

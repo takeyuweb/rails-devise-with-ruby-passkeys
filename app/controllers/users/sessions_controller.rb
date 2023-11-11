@@ -48,15 +48,17 @@ class Users::SessionsController < Devise::SessionsController
     parsed_credential = JSON.parse(passkey_params[:credential]) rescue nil
     return @authrized_passkey = nil unless parsed_credential
 
-    x, passkey = relying_party.verify_authentication(
-      parsed_credential,
-      stored_authentication_challenge,
-      user_verification: true
-    ) do |webauthn_credential|
-      user = User.find_by(email: params[:user][:email])
-      user.passkeys&.find_by!(external_id: webauthn_credential.id)
-    end
+    webauthn_credential = WebAuthn::Credential.from_get(parsed_credential)
+    passkey = Passkey.find_by(external_id: webauthn_credential.id)
+    return @authrized_passkey = nil unless passkey
 
-    @authrized_passkey = passkey
+    verified = webauthn_credential.verify(
+      stored_authentication_challenge,
+      public_key: passkey.public_key,
+      sign_count: passkey.sign_count,
+      user_verification: "required"
+    )
+
+    @authrized_passkey = verified ? passkey : nil
   end
 end
